@@ -294,8 +294,8 @@ class HiddenMarkovModel:
         '''
 
         for iter in range(N_iters):
-            if iter % 100 == 0:
-#                 print("Iteration {} of {}".format(iter, N_iters))
+            if iter % 10 == 0:
+                print("Iteration {} of {}".format(iter, N_iters))
             A_num = np.zeros((self.L, self.L))
             A_den = np.zeros((self.L, self.L))
             O_num = np.zeros((self.L, self.D))
