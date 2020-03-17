@@ -36,6 +36,9 @@
 
 import random
 import numpy as np
+import string
+import pyphen
+import re
 
 class HiddenMarkovModel:
     '''
@@ -386,6 +389,105 @@ class HiddenMarkovModel:
             state = np.random.choice(list(range(self.L)), p=self.A[state])
             emission.append(np.random.choice(list(range(self.D)), p=self.O[state]))
 
+            states.append(state)
+
+        return emission, states
+
+
+
+    def get_syllables(self, word, syl_dict, rem_num_syl):
+
+
+        word = re.sub('^[^a-zA-Z]*|[^a-zA-Z]*$', '', word)
+
+        if (word.lower() not in syl_dict):
+            dic = pyphen.Pyphen(lang='en')
+            syl = dic.inserted(word.lower()).split('-')
+            return len(syl)
+
+        normal, end = syl_dict[word.lower()]
+
+        for idx in range(len(normal)):
+            if normal[idx] <= rem_num_syl:
+                return normal[idx]
+
+        if (len(end) != 0):
+            for idx in range(len(end)):
+                if end[idx] == rem_num_syl:
+                    return end[idx]
+
+        return -1
+
+
+    def generate_sonnet_emission(self, M, inv_obs_map, syl_dict):
+
+        emission = []
+        states = []
+
+        syllable_count = 0
+
+        state = np.random.choice(list(range(self.L)))
+
+        while syllable_count < M:
+            state = np.random.choice(list(range(self.L)), p=self.A[state])
+
+            choice = -1
+            s_count = -1
+
+            while (syllable_count + s_count > M or s_count == -1):
+                choice = np.random.choice(list(range(self.D)), p=self.O[state])
+                s_count = self.get_syllables(inv_obs_map[choice], syl_dict, M - syllable_count)
+
+            syllable_count += s_count
+            emission.append(choice)
+            states.append(state)
+
+        return emission, states
+
+    def find_state(self, seed_word_idx):
+        probs = [elem[seed_word_idx] for elem in self.O]
+
+        total = sum(probs)
+
+        probs = [p / total for p in probs]
+        rand_uniform = random.uniform(0, 1)
+
+        chosen_state = 0
+
+        while rand_uniform > 0:
+            rand_uniform -= probs[chosen_state]
+            chosen_state += 1
+        return chosen_state - 1
+
+    def generate_sonnet_rhyme_emission(self, M, seed_word_idx, inv_obs_map, syl_dict):
+
+        emission = []
+        states = []
+
+        syllable_count = 0;
+
+        state = self.find_state(seed_word_idx)
+
+        while syllable_count < M:
+            if syllable_count == 0:
+
+                states.append(state)
+                emission.append(seed_word_idx)
+                syllable_count += self.get_syllables(inv_obs_map[seed_word_idx], syl_dict, M)
+
+                continue
+
+            state = np.random.choice(list(range(self.L)), p=self.A[state])
+
+            choice = -1
+            s_count = -1
+
+            while (syllable_count + s_count > M or s_count == -1):
+                choice = np.random.choice(list(range(self.D)), p=self.O[state])
+                s_count = self.get_syllables(inv_obs_map[choice], syl_dict, M - syllable_count)
+
+            syllable_count += s_count
+            emission.append(choice)
             states.append(state)
 
         return emission, states
