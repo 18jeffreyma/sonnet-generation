@@ -1,7 +1,5 @@
-# cs155-shakespearean-poem-generation
-
 # MiniProject 3: Shakespearean Poem Generation
-### Group Members: Jennifer Sun, Jeffrey Ma, Cecilia Zhang
+#### Group Members: Jennifer Sun, Jeffrey Ma, Cecilia Zhang
 
 ## Important Files
 - <strong>HMM\_additional\_bee\_movie.ipynb:</strong> Jupyter notebook incorporating the Bee 
