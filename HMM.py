@@ -394,7 +394,7 @@ class HiddenMarkovModel:
         return emission, states
 
     ################################################################################
-    CHANGES MADE: ADDED UNIQUE EMISSION FUNCTIONS SPECIFICALLY FOR SONNET GENERATION
+    # CHANGES MADE: ADDED UNIQUE EMISSION FUNCTIONS SPECIFICALLY FOR SONNET GENERATION
     ################################################################################
 
     def get_syllables(self, word, syl_dict, rem_num_syl):
@@ -499,7 +499,7 @@ class HiddenMarkovModel:
         return emission, states
     
     ################################################################################
-    END CHANGES
+    # END CHANGES
     ################################################################################
     
 
