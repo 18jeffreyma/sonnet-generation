@@ -393,7 +393,9 @@ class HiddenMarkovModel:
 
         return emission, states
 
-
+    ################################################################################
+    CHANGES MADE: ADDED UNIQUE EMISSION FUNCTIONS SPECIFICALLY FOR SONNET GENERATION
+    ################################################################################
 
     def get_syllables(self, word, syl_dict, rem_num_syl):
 
@@ -417,8 +419,9 @@ class HiddenMarkovModel:
                     return end[idx]
 
         return -1
-
-
+    
+    # given a number of syllables, a inverted obs map (obx idx to word), and a syllable dictionary),
+    # return indices corresponding to a sonnet
     def generate_sonnet_emission(self, M, inv_obs_map, syl_dict):
 
         emission = []
@@ -444,6 +447,7 @@ class HiddenMarkovModel:
 
         return emission, states
 
+    # given a seed word idx (from observation_map), find the state is in
     def find_state(self, seed_word_idx):
         probs = [elem[seed_word_idx] for elem in self.O]
 
@@ -459,6 +463,8 @@ class HiddenMarkovModel:
             chosen_state += 1
         return chosen_state - 1
 
+    # given a number of syllables, a inverted obs map (obx idx to word), and a syllable dictionary), and a seed word
+    # return indices corresponding to a sonnet in reverse order
     def generate_sonnet_rhyme_emission(self, M, seed_word_idx, inv_obs_map, syl_dict):
 
         emission = []
@@ -491,7 +497,11 @@ class HiddenMarkovModel:
             states.append(state)
 
         return emission, states
-
+    
+    ################################################################################
+    END CHANGES
+    ################################################################################
+    
 
     def probability_alphas(self, x):
         '''
