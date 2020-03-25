@@ -8,6 +8,8 @@
   Spenser sonnets as an additional text file when training our HMM.
 - <strong>HMM\_naive\_generation.ipynb:</strong> Jupyter notebook used to train a Hidden Markov 
   Model on Shakespearean sonnets and generate a 14-line sonnet.
+- <strong>HMM\_naive\_haiku.ipynh:</strong> Jupyter notebook used to train a Hidden Markov 
+  Model on Shakespearean sonnets and generate a 3-line haiku.
 - <strong>HMM\_with\_rhyme.ipynb:</strong> Jupyter notebook used to generate a 14-line sonnet 
   that follows the same rhyming scheme as a Shakespearean sonnet. 
 - <strong>Preprocessing.ipynb:</strong> Jupyter notebook used to help preprocess the text file
